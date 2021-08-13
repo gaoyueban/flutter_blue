@@ -743,11 +743,11 @@ public class FlutterBluePlugin implements FlutterPlugin, ActivityAware, MethodCa
             settings = Protos.ScanSettings.newBuilder().mergeFrom(data).build();
             allowDuplicates = settings.getAllowDuplicates();
             macDeviceScanned.clear();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                startScan21(settings);
-            } else {
+//             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                 startScan21(settings);
+//             } else {
                 startScan18(settings);
-            }
+//             }
             result.success(null);
         } catch (Exception e) {
             result.error("startScan", e.getMessage(), e);
@@ -755,11 +755,11 @@ public class FlutterBluePlugin implements FlutterPlugin, ActivityAware, MethodCa
     }
 
     private void stopScan() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            stopScan21();
-        } else {
+//         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//             stopScan21();
+//         } else {
             stopScan18();
-        }
+//         }
     }
 
     private ScanCallback scanCallback21;
@@ -844,7 +844,8 @@ public class FlutterBluePlugin implements FlutterPlugin, ActivityAware, MethodCa
         for(int i = 0; i < serviceUuids.size(); i++) {
             uuids[i] = UUID.fromString(serviceUuids.get(i));
         }
-        boolean success = mBluetoothAdapter.startLeScan(uuids, getScanCallback18());
+//         boolean success = mBluetoothAdapter.startLeScan(uuids, getScanCallback18());
+        boolean success = mBluetoothAdapter.startLeScan(getScanCallback18());
         if(!success) throw new IllegalStateException("getBluetoothLeScanner() is null. Is the Adapter on?");
     }
 
