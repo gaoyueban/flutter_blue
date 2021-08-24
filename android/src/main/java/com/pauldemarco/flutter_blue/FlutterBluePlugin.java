@@ -535,9 +535,9 @@ public class FlutterBluePlugin implements FlutterPlugin, ActivityAware, MethodCa
                     gattServer = locateGatt(request.getRemoteId());
                     characteristic = locateCharacteristic(gattServer, request.getServiceUuid(), request.getSecondaryServiceUuid(), request.getCharacteristicUuid());
                     cccDescriptor = characteristic.getDescriptor(CCCD_ID);
-                    if(cccDescriptor == null) {
-                        throw new Exception("could not locate CCCD descriptor for characteristic: " +characteristic.getUuid().toString());
-                    }
+//                     if(cccDescriptor == null) {
+//                         throw new Exception("could not locate CCCD descriptor for characteristic: " +characteristic.getUuid().toString());
+//                     }
                 } catch(Exception e) {
                     result.error("set_notification_error", e.getMessage(), null);
                     return;
