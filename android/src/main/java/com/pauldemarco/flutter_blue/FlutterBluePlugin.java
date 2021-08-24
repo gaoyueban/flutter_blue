@@ -78,7 +78,7 @@ public class FlutterBluePlugin implements FlutterPlugin, ActivityAware, MethodCa
     private Activity activity;
 
     private static final int REQUEST_FINE_LOCATION_PERMISSIONS = 1452;
-//     static final private UUID CCCD_ID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
+    static final private UUID CCCD_ID = UUID.fromString("11100000-0000-0000-0000-000000000000");
     private final Map<String, BluetoothDeviceCache> mDevices = new HashMap<>();
     private LogLevel logLevel = LogLevel.EMERGENCY;
 
@@ -534,10 +534,10 @@ public class FlutterBluePlugin implements FlutterPlugin, ActivityAware, MethodCa
                 try {
                     gattServer = locateGatt(request.getRemoteId());
                     characteristic = locateCharacteristic(gattServer, request.getServiceUuid(), request.getSecondaryServiceUuid(), request.getCharacteristicUuid());
-//                     cccDescriptor = characteristic.getDescriptor(CCCD_ID);
-//                     if(cccDescriptor == null) {
-//                         throw new Exception("could not locate CCCD descriptor for characteristic: " +characteristic.getUuid().toString());
-//                     }
+                    cccDescriptor = characteristic.getDescriptor(CCCD_ID);
+                    if(cccDescriptor == null) {
+                        throw new Exception("could not locate CCCD descriptor for characteristic: " +characteristic.getUuid().toString());
+                    }
                 } catch(Exception e) {
                     result.error("set_notification_error", e.getMessage(), null);
                     return;
@@ -948,13 +948,13 @@ public class FlutterBluePlugin implements FlutterPlugin, ActivityAware, MethodCa
             p.setSuccess(status == BluetoothGatt.GATT_SUCCESS);
             invokeMethodUIThread("WriteDescriptorResponse", p.build().toByteArray());
 
-//             if(descriptor.getUuid().compareTo(CCCD_ID) == 0) {
-//                 // SetNotificationResponse
-//                 Protos.SetNotificationResponse.Builder q = Protos.SetNotificationResponse.newBuilder();
-//                 q.setRemoteId(gatt.getDevice().getAddress());
-//                 q.setCharacteristic(ProtoMaker.from(gatt.getDevice(), descriptor.getCharacteristic(), gatt));
-//                 invokeMethodUIThread("SetNotificationResponse", q.build().toByteArray());
-//             }
+            if(descriptor.getUuid().compareTo(CCCD_ID) == 0) {
+                // SetNotificationResponse
+                Protos.SetNotificationResponse.Builder q = Protos.SetNotificationResponse.newBuilder();
+                q.setRemoteId(gatt.getDevice().getAddress());
+                q.setCharacteristic(ProtoMaker.from(gatt.getDevice(), descriptor.getCharacteristic(), gatt));
+                invokeMethodUIThread("SetNotificationResponse", q.build().toByteArray());
+            }
         }
 
         @Override
